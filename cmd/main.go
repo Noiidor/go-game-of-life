@@ -2,50 +2,32 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	life "github.com/Noiidor/go-game-of-life/life"
 )
 
 func main() {
-	field := []string{
-		"ᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠᅠᅠ▮▮ᅠ▮ᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠ▮▮ᅠ▮ᅠ▮▮ᅠ▮▮▮ᅠ",
-		"ᅠᅠ▮▮▮▮ᅠᅠ▮▮ᅠᅠᅠᅠᅠᅠ▮",
-		"ᅠ▮ᅠᅠᅠᅠ▮ᅠᅠᅠ▮ᅠᅠᅠ▮▮ᅠ",
-		"ᅠᅠ▮▮ᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠ▮▮ᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠ▮ᅠ▮ᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠᅠ▮ᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
-		"ᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠᅠ",
+	field := [][]bool{
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, true, true, false, false, false},
+		{false, false, true, false, true, false, false, false},
+		{false, false, false, false, true, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
 	}
 
 	for {
-		fmt.Printf("\033[0;0H")
-		fmt.Print("\r"+strings.Join(field, "\n"), "\n", strings.Repeat("-", len(field[0])))
+		//fmt.Printf("\033[0;0H")
+		fieldView := life.BuildFieldString(field)
 
-		field = life.ProcessFieldIteration(field)
+		fmt.Print(fieldView)
 
-		time.Sleep(time.Millisecond * 50)
+		field = life.ProcessFieldIterationNew(field)
+
+		time.Sleep(time.Millisecond * 100)
 
 	}
-
-	// for i := 0; i < 10; i++ {
-	// 	fmt.Printf("\033[0;0H")
-
-	// 	fmt.Print(strings.Join(field, "\n"))
-
-	// 	time.Sleep(time.Second) // Simulating some work being done
-	// }
-
-	// fmt.Println("\nTask completed!")
 }
