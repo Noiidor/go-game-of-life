@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	life.StartGameOfLife(0, 100)
+	life.StartGameOfLife(0, 75, 30, 30, 35)
 }

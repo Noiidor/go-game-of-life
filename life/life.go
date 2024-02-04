@@ -7,22 +7,9 @@ import (
 	"time"
 )
 
-func StartGameOfLife(iterations int, delayMs int) {
-	// field := [][]bool{
-	// 	{false, false, false, false, false, false, false, false, false, false, false, false, false},
-	// 	{false, false, false, false, false, false, false, false, false, false, false, false, false},
-	// 	{false, false, false, false, false, false, false, false, false, false, false, false, false},
-	// 	{false, false, false, false, false, false, false, false, false, false, false, false, false},
-	// 	{false, false, false, false, false, true, true, false, false, false, false, false, false},
-	// 	{false, false, false, false, true, false, true, false, false, false, false, false, false},
-	// 	{false, false, false, false, false, false, true, false, false, false, false, false, false},
-	// 	{false, false, false, false, false, false, false, false, false, false, false, false, false},
-	// 	{false, false, false, false, false, false, false, false, false, false, false, false, false},
-	// 	{false, false, false, false, false, false, false, false, false, false, false, false, false},
-	// 	{false, false, false, false, false, false, false, false, false, false, false, false, false},
-	// }
+func StartGameOfLife(iterations int, delayMs int, fieldHeight int, fieldWidth int, startLiveCellPercent int) {
 
-	field := RandomCellsInit(20, 20, 30)
+	field := RandomCellsInit(fieldHeight, fieldWidth, startLiveCellPercent)
 
 	carriageReturneOnce := false
 	if iterations < 1 { //eeehh..seems like not DRY at all
