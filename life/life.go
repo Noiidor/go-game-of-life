@@ -31,8 +31,8 @@ func printFieldView(field [][]bool, iteration int, liveCells int) {
 	}
 
 	fmt.Print(fieldView)
-	fmt.Printf("Iteration: %d Live cells: %v\n", iteration, liveCells)
-}
+	fmt.Printf("Iteration: %d Live cells: %v     \n", iteration, liveCells)
+} //                                          ^ workaround to override printed digits from last iteration with whitespaces
 
 func processFieldIteration(field [][]bool) ([][]bool, int) {
 
