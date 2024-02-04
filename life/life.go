@@ -11,51 +11,24 @@ func StartGameOfLife(iterations int, delayMs int, fieldHeight int, fieldWidth in
 
 	field := randomCellsInit(fieldHeight, fieldWidth, startLiveCellPercent)
 
+	infiniteLoop := iterations < 1
+
 	carriageReturneOnce := false
-	if iterations < 1 { //eeehh..seems like not DRY at all
-		iterCounter := 0
-		for {
+	for i := 0; infiniteLoop || i < iterations; i++ {
+		fieldView := buildFieldString(field, i)
 
-			fieldView := buildFieldString(field, iterCounter)
-
-			if carriageReturneOnce { // hack to not let carriage to mess up terminal in first iteration
-				height := len(field) + 3
-				fmt.Printf("\033[%dA", height) // returns carriage up to field height(2 is field frame lines)
-
-			} else {
-				carriageReturneOnce = true
-			}
-
-			//fmt.Print(string('\x1b') + "[" + "s") // Saving cursor position for some reason dont work in powershell
-
-			fmt.Print(fieldView)
-
-			//fmt.Print(string('\x1b') + "[" + "u")
-
-			field = processFieldIteration(field)
-
-			iterCounter++
-
-			time.Sleep(time.Millisecond * time.Duration(delayMs))
-
+		if carriageReturneOnce { // hack to not let carriage to mess up terminal in first iteration
+			height := len(field) + 3
+			fmt.Printf("\033[%dA", height)
+		} else {
+			carriageReturneOnce = true
 		}
-	} else {
-		for i := 0; i < iterations; i++ {
-			fieldView := buildFieldString(field, i)
 
-			if carriageReturneOnce {
-				height := len(field) + 3
-				fmt.Printf("\033[%dA", height)
-			} else {
-				carriageReturneOnce = true
-			}
+		fmt.Print(fieldView)
 
-			fmt.Print(fieldView)
+		field = processFieldIteration(field)
 
-			field = processFieldIteration(field)
-
-			time.Sleep(time.Millisecond * time.Duration(delayMs))
-		}
+		time.Sleep(time.Millisecond * time.Duration(delayMs))
 	}
 }
 
