@@ -9,7 +9,7 @@ import (
 
 func StartGameOfLife(iterations int, delayMs int, fieldHeight int, fieldWidth int, startLiveCellPercent int) {
 
-	field := RandomCellsInit(fieldHeight, fieldWidth, startLiveCellPercent)
+	field := randomCellsInit(fieldHeight, fieldWidth, startLiveCellPercent)
 
 	carriageReturneOnce := false
 	if iterations < 1 { //eeehh..seems like not DRY at all
@@ -114,7 +114,7 @@ func copyFieldSlice(field [][]bool) [][]bool {
 	return copiedField
 }
 
-func RandomCellsInit(fieldHeight int, fieldWidth int, livePercentage int) [][]bool {
+func randomCellsInit(fieldHeight int, fieldWidth int, livePercentage int) [][]bool {
 	field := make([][]bool, fieldHeight)
 	for i := 0; i < fieldHeight; i++ {
 		field[i] = make([]bool, fieldWidth)
@@ -169,8 +169,4 @@ func buildFieldString(field [][]bool, iteration int) string {
 
 func loopedIndex(index int, sliceLen int) int {
 	return (index%sliceLen + sliceLen) % sliceLen
-}
-
-func ValidateField(field []string) bool {
-	return true
 }
