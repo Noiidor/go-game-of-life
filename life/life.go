@@ -143,8 +143,6 @@ func RandomCellsInit(fieldHeight int, fieldWidth int, livePercentage int) [][]bo
 func buildFieldString(field [][]bool, iteration int) string {
 	var builder strings.Builder
 
-	liveCells := 0
-
 	builder.WriteRune('╔')
 
 	for i := 0; i < len(field[0]); i++ {
@@ -154,6 +152,7 @@ func buildFieldString(field [][]bool, iteration int) string {
 	builder.WriteRune('╗')
 	builder.WriteString("\n")
 
+	liveCells := 0
 	for _, line := range field {
 		builder.WriteRune('║')
 		for _, cell := range line {
@@ -176,7 +175,7 @@ func buildFieldString(field [][]bool, iteration int) string {
 
 	builder.WriteRune('╝')
 	builder.WriteString("\n")
-	builder.WriteString(fmt.Sprintf("Iteration: %d Live cells: %d\n", iteration, liveCells))
+	builder.WriteString(fmt.Sprintf("Iteration: %d Live cells: %v\n", iteration, liveCells))
 
 	return builder.String()
 }
