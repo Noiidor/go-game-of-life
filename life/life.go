@@ -8,35 +8,39 @@ import (
 )
 
 func StartGameOfLife(iterations int, delayMs int, fieldHeight int, fieldWidth int, startLiveCellPercent int) {
-
 	field := randomCellsInit(fieldHeight, fieldWidth, startLiveCellPercent)
 
 	infiniteLoop := iterations < 1
+	liveCells := 0
 
-	carriageReturneOnce := false
 	for i := 0; infiniteLoop || i < iterations; i++ {
-		fieldView := buildFieldString(field, i)
+		printFieldView(field, i, liveCells)
 
-		if carriageReturneOnce { // hack to not let carriage to mess up terminal in first iteration
-			height := len(field) + 3
-			fmt.Printf("\033[%dA", height)
-		} else {
-			carriageReturneOnce = true
-		}
-
-		fmt.Print(fieldView)
-
-		field = processFieldIteration(field)
+		field, liveCells = processFieldIteration(field)
 
 		time.Sleep(time.Millisecond * time.Duration(delayMs))
 	}
 }
 
-func processFieldIteration(field [][]bool) [][]bool {
+func printFieldView(field [][]bool, iteration int, liveCells int) {
+	fieldView := buildFieldString(field, iteration)
+
+	if iteration != 0 { // hack to not let carriage to mess up terminal in first iteration
+		height := len(field) + 3
+		fmt.Printf("\033[%dA", height)
+	}
+
+	fmt.Print(fieldView)
+	fmt.Printf("Iteration: %d Live cells: %v\n", iteration, liveCells)
+}
+
+func processFieldIteration(field [][]bool) ([][]bool, int) {
 
 	updatedField := copyFieldSlice(field)
 
 	gridNeighboursCoords := [3]int{-1, 0, 1} // user to determine coords of neighbour cells
+
+	currentLiveCells := 0
 
 	for i, line := range field {
 		for j, cell := range line {
@@ -63,16 +67,19 @@ func processFieldIteration(field [][]bool) [][]bool {
 			if cell { // if cell is live
 				if liveNeighboursCount > 3 || liveNeighboursCount < 2 {
 					updatedField[i][j] = false
+				} else {
+					currentLiveCells++
 				}
 			} else {
 				if liveNeighboursCount == 3 {
 					updatedField[i][j] = true
+					currentLiveCells++
 				}
 			}
 		}
 	}
 
-	return updatedField
+	return updatedField, currentLiveCells
 }
 
 func copyFieldSlice(field [][]bool) [][]bool {
@@ -112,13 +119,11 @@ func buildFieldString(field [][]bool, iteration int) string {
 	builder.WriteRune('╗')
 	builder.WriteString("\n")
 
-	liveCells := 0
 	for _, line := range field {
 		builder.WriteRune('║')
 		for _, cell := range line {
 			if cell {
 				builder.WriteString("██")
-				liveCells++
 			} else {
 				builder.WriteString("  ")
 			}
@@ -135,7 +140,6 @@ func buildFieldString(field [][]bool, iteration int) string {
 
 	builder.WriteRune('╝')
 	builder.WriteString("\n")
-	builder.WriteString(fmt.Sprintf("Iteration: %d Live cells: %v\n", iteration, liveCells))
 
 	return builder.String()
 }
