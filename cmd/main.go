@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	life "github.com/Noiidor/go-game-of-life/life"
+	life "github.com/Noiidor/go-game-of-life/pkg/life"
 )
 
 func main() {

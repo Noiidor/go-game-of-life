@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func StartGameOfLife(iterations int, delayMs int, fieldHeight int, fieldWidth int, startLiveCellPercent int) {
+func StartGameOfLife(iterations, delayMs, fieldHeight, fieldWidth, startLiveCellPercent int) {
 	field := randomCellsInit(fieldHeight, fieldWidth, startLiveCellPercent)
 
 	infiniteLoop := iterations < 1
@@ -22,10 +22,10 @@ func StartGameOfLife(iterations int, delayMs int, fieldHeight int, fieldWidth in
 	}
 }
 
-func printFieldView(field [][]bool, iteration int, liveCells int) {
+func printFieldView(field [][]bool, iteration, liveCells int) {
 	fieldView := buildFieldString(field, iteration)
 
-	if iteration != 0 { // hack to not let carriage to mess up terminal in first iteration
+	if iteration != 0 { // condition to not let carriage to mess up terminal in first iteration
 		height := len(field) + 3
 		fmt.Printf("\033[%dA", height)
 	}
@@ -38,7 +38,7 @@ func processFieldIteration(field [][]bool) ([][]bool, int) {
 
 	updatedField := copyFieldSlice(field)
 
-	gridNeighboursCoords := [3]int{-1, 0, 1} // user to determine coords of neighbour cells
+	gridNeighboursCoords := [3]int{-1, 0, 1} // used to determine coords of neighbour cells
 
 	currentLiveCells := 0
 
@@ -47,9 +47,9 @@ func processFieldIteration(field [][]bool) ([][]bool, int) {
 
 			liveNeighboursCount := 0
 
-			for _, coordChangeY := range gridNeighboursCoords {
+			for _, coordChangeY := range gridNeighboursCoords { // going around current neighbours cells
 				for _, coordChangeX := range gridNeighboursCoords {
-					if coordChangeY == 0 && coordChangeX == 0 { // current cell
+					if coordChangeY == 0 && coordChangeX == 0 { // skip if current cell
 						continue
 					}
 
@@ -94,7 +94,7 @@ func copyFieldSlice(field [][]bool) [][]bool {
 	return copiedField
 }
 
-func randomCellsInit(fieldHeight int, fieldWidth int, livePercentage int) [][]bool {
+func randomCellsInit(fieldHeight, fieldWidth, livePercentage int) [][]bool {
 	field := make([][]bool, fieldHeight)
 	for i := 0; i < fieldHeight; i++ {
 		field[i] = make([]bool, fieldWidth)
@@ -144,6 +144,6 @@ func buildFieldString(field [][]bool, iteration int) string {
 	return builder.String()
 }
 
-func loopedIndex(index int, sliceLen int) int {
+func loopedIndex(index, sliceLen int) int {
 	return (index%sliceLen + sliceLen) % sliceLen
 }
